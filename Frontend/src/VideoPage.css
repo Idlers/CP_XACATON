@@ -1,0 +1,112 @@
+.video-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.video-list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 400px; /* Высота скролла */
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  padding: 10px;
+}
+
+.video-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+  cursor: pointer; /* Курсор для указания на интерактивность */
+}
+
+.video-item:last-child {
+  border-bottom: none;
+}
+
+.video-title {
+  width: 30%; /* Ширина для названия видео */
+}
+
+.video-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 40%; /* Ширина контролов */
+}
+
+.like-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px; /* Увеличиваем размер */
+  color: green; /* Цвет кнопки */
+  transition: transform 0.1s ease, color 0.2s ease; /* Добавляем эффекты при наведении */
+}
+
+.like-btn:hover {
+  transform: scale(1.1); /* Увеличиваем при наведении */
+}
+
+.dislike-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px; /* Увеличиваем размер */
+  color: red; /* Цвет кнопки */
+  transition: transform 0.1s ease, color 0.2s ease; /* Добавляем эффекты при наведении */
+}
+
+.dislike-btn:hover {
+  transform: scale(1.1); /* Увеличиваем при наведении */
+}
+
+.watch-time {
+  width: 30%; /* Ширина для времени просмотра */
+  text-align: right;
+}
+
+.refresh-recommendations {
+  margin-top: 20px;
+}
+
+.refresh-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.refresh-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Стиль для всплывающего окна */
+.tooltip {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  max-width: 200px; /* Максимальная ширина всплывающего окна */
+  left: 10%; /* Центрируем по горизонтали */
+  transform: translateX(-50%); /* Убираем смещение */
+  top: 100%; /* Поднимаем окно ниже элемента */
+  margin-top: 5px; /* Отступ сверху */
+}
+
+.video-item:hover .tooltip {
+  display: block; /* Отображаем всплывающее окно при наведении на элемент */
+}

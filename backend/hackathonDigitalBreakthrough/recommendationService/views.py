@@ -2,6 +2,9 @@ from rest_framework import viewsets
 from .models import Category, Video
 from .serializers import CategorySerializer, VideoSerializer
 
+"""
+API для работы с видео и категориями
+"""
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()

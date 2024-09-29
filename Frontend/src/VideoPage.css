@@ -1,130 +1,172 @@
+/* Стили для всего тела документа */
+body {
+  margin: 0; /* Убираем отступы по умолчанию */
+  padding: 0; /* Убираем внутренние отступы по умолчанию */
+  background-image: url('./background.jpg'); /* Путь к изображению для фона */
+  background-size: cover; /* Фон занимает весь элемент */
+  background-repeat: no-repeat; /* Фон не повторяется */
+  background-position: center; /* Центрируем изображение на экране */
+  height: 100vh; /* Высота на 100% экрана */
+}
+
+/* Стили для основного контейнера видео-страницы */
 .video-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #f0f0f0;
-  max-width: 900px;
-  margin: 0 auto;
+  display: flex; /* Используем flexbox для выравнивания элементов */
+  flex-direction: column; /* Элементы располагаются в колонку */
+  align-items: center; /* Центрируем элементы по горизонтали */
+  padding: 20px; /* Внутренние отступы */
+  background-color: rgba(245, 3, 3, 0.7); /* Полупрозрачный цвет фона для видимости контента */
+  max-width: 900px; /* Максимальная ширина контейнера */
+  margin: 0 auto; /* Центрируем контейнер по горизонтали */
 }
 
+/* Стили для логотипа */
+.logo {
+  width: 60px; /* Ширина логотипа */
+  height: auto; /* Высота автоматически сохраняет пропорции */
+  position: absolute; /* Абсолютное позиционирование для свободного размещения */
+  top: 10px; /* Отступ от верхнего края */
+  left: 10px; /* Отступ от левого края */
+  z-index: 10; /* Устанавливаем слой логотипа на переднем плане */
+}
+
+/* Стили для списка видео */
 .video-list {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  max-height: 400px;
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: white;
-  padding: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex; /* Используем flexbox для расположения элементов */
+  flex-direction: column; /* Элементы располагаются в колонку */
+  overflow-y: auto; /* Прокрутка по вертикали */
+  max-height: 400px; /* Максимальная высота списка */
+  width: 100%; /* Ширина на 100% родительского элемента */
+  border: 1px solid #ccc; /* Серая рамка */
+  border-radius: 5px; /* Закругленные углы */
+  background-color: white; /* Цвет фона белый */
+  padding: 10px; /* Внутренние отступы */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для добавления глубины */
 }
 
+/* Стили для каждой отдельной записи видео */
 .video-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center; /* Центрируем вертикально */
-  padding: 10px;
-  border-bottom: 1px solid #e0e0e0;
-  position: relative;
-  cursor: pointer;
+  display: flex; /* Используем flexbox для расположения элементов */
+  justify-content: space-between; /* Распределяем пространство между элементами */
+  align-items: center; /* Центрируем элементы по вертикали */
+  padding: 10px; /* Внутренние отступы */
+  border-bottom: 1px solid #e0e0e0; /* Линия внизу для разделения записей */
+  position: relative; /* Относительное позиционирование для элементов внутри */
+  cursor: pointer; /* Указываем, что элемент кликабельный */
 }
 
+/* Убираем рамку у последней записи */
 .video-item:last-child {
-  border-bottom: none;
+  border-bottom: none; /* Без нижней рамки для последнего элемента */
 }
 
+/* Стили для заголовка видео */
 .video-title {
-  flex-grow: 1;
-  margin-right: 10px;
+  flex-grow: 1; /* Позволяет элементу занимать всё доступное пространство */
+  margin-right: 10px; /* Отступ справа */
 }
 
+/* Стили для контролов лайков и дизлайков */
 .video-controls {
-  display: flex;
-  justify-content: center; /* Центрируем кнопки лайка и дизлайка по горизонтали */
-  width: auto;
-  margin-left: 20px; /* Добавляем отступ слева от контролов */
+  display: flex; /* Используем flexbox */
+  justify-content: center; /* Центрируем кнопки по горизонтали */
+  width: auto; /* Автоширина */
+  margin-left: 20px; /* Отступ слева */
 }
 
+/* Стили для отображаемой даты */
 .current-date {
-  margin-left: 20px; /* Увеличиваем отступ слева от даты */
-  font-weight: bold; /* Жирный шрифт для даты */
-  flex-shrink: 0; /* Запрещаем сжимать дату */
+  margin-left: 20px; /* Отступ слева */
+  font-weight: bold; /* Жирный шрифт для выделения */
+  flex-shrink: 0; /* Запрещает уменьшение ширины */
 }
 
+/* Стили для кнопок лайка и дизлайка */
 .reaction-btn {
-  background-color: rgb(244, 239, 239);
-  border: 2px solid #020202; 
-  border-radius: 50%; 
-  width: 40px; 
-  height: 40px; 
-  font-size: 16px; 
-  color: #000000; 
-  cursor: pointer; 
-  transition: background-color 0.2s ease, transform 0.1s ease; 
-  display: inline-flex; 
-  align-items: center; 
-  justify-content: center; 
+  background-color: rgb(244, 239, 239); /* Цвет кнопки */
+  border: 2px solid #020202; /* Цвет границы */
+  border-radius: 50%; /* Кнопки круглые */
+  width: 40px; /* Ширина кнопки */
+  height: 40px; /* Высота кнопки */
+  font-size: 16px; /* Размер шрифта */
+  color: #000000; /* Цвет текста */
+  cursor: pointer; /* Указатель при наведении */
+  transition: background-color 0.2s ease, transform 0.1s ease; /* Плавные переходы */
+  display: inline-flex; /* Inline Flexbox для центровки содержимого */
+  align-items: center; /* Центрируем элементы внутри кнопки по вертикали */
+  justify-content: center; /* Центрируем элементы внутри кнопки по горизонтали */
 }
 
+/* Отступ между кнопками лайка и дизлайка */
 .reaction-btn:first-of-type {
-  margin-right: 10px; 
+  margin-right: 10px; /* Отступ справа для первой кнопки */
 }
 
+/* Эффект при наведении на кнопки */
 .reaction-btn:hover {
-  background-color: #e0e0e0; 
-  transform: scale(1.1); 
+  background-color: #e0e0e0; /* Цвет при наведении */
+  transform: scale(1.1); /* Увеличение кнопки при наведении */
 }
 
+/* Стили для кнопки дизлайка, когда она активна */
 .reaction-btn.noactive {
-  background-color: rgb(165, 16, 46); 
-  color: rgb(0, 0, 0); 
-  border: 2px solid rgb(165, 16, 46);
+  background-color: rgb(165, 16, 46); /* Цвет дизлайка */
+  color: rgb(0, 0, 0); /* Цвет текста */
+  border: 2px solid rgb(165, 16, 46); /* Цвет границы соответствующий цвету кнопки */
 }
 
+/* Стили для кнопки лайка, когда она активна */
 .reaction-btn.active {
-  background-color: rgb(44, 199, 80); 
-  color: rgb(0, 0, 0); 
-  border: 2px solid rgb(44, 199, 80); 
+  background-color: rgb(44, 199, 80); /* Цвет лайка */
+  color: rgb(0, 0, 0); /* Цвет текста */
+  border: 2px solid rgb(44, 199, 80); /* Цвет границы соответствующий цвету кнопки */
 }
 
+/* Стили для блока обновления рекомендаций */
 .refresh-recommendations {
-  margin-top: 20px;
+  margin-top: 20px; /* Отступ сверху */
 }
 
+/* Стили для кнопки обновления рекомендаций */
 .refresh-btn {
-  padding: 10px 20px;
-  background-color: #010101;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+  padding: 10px 20px; /* Внутренние отступы */
+  background-color: #010000; /* Цвет кнопки */
+  color: white; /* Цвет текста */
+  border: none; /* Без границы */
+  border-radius: 5px; /* Закругленные углы */
+  cursor: pointer; /* Указатель при наведении */
+  font-size: 16px; /* Размер шрифта */
 }
 
+/* Эффект при наведении на кнопку обновления */
 .refresh-btn:hover {
-  background-color: #838588;
+  background-color: #838588; /* Цвет при наведении */
 }
 
+/* Стили для всплывающей подсказки */
 .tooltip {
-  position: absolute;
-  background-color: white;
-  border: 1px solid #007bff;
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 100;
-  max-width: 200px;
-  width: auto;
-  left: 30%;
-  transform: translateX(-50%);
-  top: 100%; 
-  margin-top: 5px; 
-  white-space: normal; 
+  position: absolute; /* Абсолютное позиционирование для размещения подсказки */
+  background-color: rgb(255, 255, 255); /* Цвет фона подсказки */
+  border: 2px solid #ff0000; /* Целостная рамка подсказки */
+  border-radius: 5px; /* Закругленные углы для подсказки */
+  padding: 10px; /* Внутренние отступы подсказки */
+  box-shadow: 0 2px 10px rgba(249, 245, 245, 0.1); /* Тень для подсказки */
+  z-index: 100; /* Устанавливаем уровень поднимаемой подсказки */
+  max-width: 200px; /* Максимальная ширина подсказки */
+  width: auto; /* Автоширина */
+  left: 30%; /* Позиция слева */
+  transform: translateX(-50%); /* Центрируем по горизонтали */
+  top: 100%; /* Позиция сверху */
+  margin-top: -55px; /* Отступ сверху */
+  white-space: normal; /* Перенос текста по строкам */
 }
 
+/* Стили для категории видео в подсказке */
+.video-category {
+  color: #030303; /* Цвет текста категории */
+}
+
+/* Отображение подсказки при наведении на элемент видео */
 .video-item:hover .tooltip {
-  display: block; 
+  display: block; /* Показываем подсказку */
 }
-

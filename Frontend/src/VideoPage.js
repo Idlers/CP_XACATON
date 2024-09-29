@@ -1,90 +1,159 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './VideoPage.css';
+import logo from './logo.jpg';
 
 const VideoPage = () => {
-    const videos = [
-        { id: 1, title: 'Видео 1', description: 'описание видео 1', category: 'Категория 1' },
-        { id: 2, title: 'Видео 2', description: 'Описание видео 2', category: 'Категория 2' },
-        { id: 3, title: 'Видео 3', description: 'Описание видео 3', category: 'Категория 3' },
-        { id: 4, title: 'Видео 4', description: 'Описание видео 4', category: 'Категория 4' },
-        { id: 5, title: 'Видео 5', description: 'Описание видео 5', category: 'Категория 5' },
-        { id: 6, title: 'Видео 6', description: 'Описание видео 6', category: 'Категория 6' },
-        { id: 7, title: 'Видео 7', description: 'Описание видео 7', category: 'Категория 7' },
-        { id: 8, title: 'Видео 8', description: 'Описание видео 8', category: 'Категория 8' },
-        { id: 9, title: 'Видео 9', description: 'Описание видео 9', category: 'Категория 9' },
-        { id: 10, title: 'Видео 10', description: 'Описание видео 10', category: 'Категория 10' },
-    ];
-
+    // Состояния для хранения данных о видео, наведённом видео, лайках и дизлайках
+    const [videos, setVideos] = useState([]);
     const [hoveredVideo, setHoveredVideo] = useState(null);
     const [likes, setLikes] = useState({});
     const [dislikes, setDislikes] = useState({});
-    
-    // Задаем дату вручную
-    const date = '2024-09-28'; // Используем вашу дату
 
-    const handleLike = (id) => {
+    useEffect(() => {
+        // Добавляем обработчик события для предотвращения масштабирования
+        const handleWheel = (event) => {
+            if (event.ctrlKey) {
+                event.preventDefault(); // Отменяем поведение по умолчанию для прокрутки с Ctrl
+            }
+        };
+
+        window.addEventListener('wheel', handleWheel, { passive: false }); // passive: false позволяет вызвать preventDefault
+
+        // Удаляем обработчик, когда компонент демонтируется
+        return () => {
+            window.removeEventListener('wheel', handleWheel);
+        };
+    }, []);
+
+    // Функция для получения списка видео с сервера
+    const fetchVideos = async () => {
+        const apps_url = 'http://localhost:8000/api/videos/';
+        try {
+            const response = await fetch(apps_url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            const data = await response.json();
+            setVideos(data); // Сохраняем данные о видео в состоянии
+        } catch (error) {
+            console.error('There has been a problem with your fetch operation:', error);
+        }
+    };
+
+    // Используем useEffect для загрузки видео один раз при загрузке компонента
+    useEffect(() => {
+        fetchVideos();
+    }, []);
+
+    // Функция для обновления лайков и дизлайков на сервере и получения обновленных видео
+    const handleRefresh = async () => {
+        const update_url = 'http://localhost:8000/videos/update_likes_dislikes/';
+
+        // Создаём массив обновлений для отправки на сервер
+        const updates = videos.map(video => ({
+            uid: video.uid, // Используем uid видео
+            has_liked: likes[video.uid] || false, // Статус лайка по uid
+            has_disliked: dislikes[video.uid] || false // Статус дизлайка по uid
+        }));
+
+        // Выводим обновления в консоль для отладки
+        console.log('Updates to send:', updates);
+    
+        try {
+            const response = await fetch(update_url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updates), // Отправляем обновления
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update videos');
+            }
+
+            const result = await response.json();
+            console.log('Response from server:', result); // Выводим ответ сервера
+
+            // После успешного обновления запрашиваем свежие данные о видео
+            fetchVideos(); // Обновляем список видео после успешного обновления
+        } catch (error) {
+            console.error('Error updating videos:', error);
+        }
+    };
+
+    // Функция для обработки лайка видео
+    const handleLike = (uid) => {
         setLikes(prevLikes => ({
             ...prevLikes,
-            [id]: prevLikes[id] ? false : true // Переключаем лайк
+            [uid]: !prevLikes[uid], // Переключаем лайк по uid
         }));
         setDislikes(prevDislikes => ({
             ...prevDislikes,
-            [id]: false // Сбрасываем дизлайк
+            [uid]: false, // Сбрасываем дизлайк
         }));
     };
 
-    const handleDislike = (id) => {
+    // Функция для обработки дизлайка видео
+    const handleDislike = (uid) => {
         setDislikes(prevDislikes => ({
             ...prevDislikes,
-            [id]: prevDislikes[id] ? false : true // Переключаем дизлайк
+            [uid]: !prevDislikes[uid], // Переключаем дизлайк по uid
         }));
         setLikes(prevLikes => ({
             ...prevLikes,
-            [id]: false // Сбрасываем лайк
+            [uid]: false, // Сбрасываем лайк
         }));
     };
 
     return (
         <div className="video-page">
+            {/* Отображаем логотип */}
+            <img src={logo} alt="Логотип" className="logo" />
             <div className="video-list">
+                {/* Маппим видео и отображаем каждое видео */}
                 {videos.map((video) => (
                     <div
                         className="video-item"
-                        key={video.id}
-                        onMouseEnter={() => setHoveredVideo(video)}
-                        onMouseLeave={() => setHoveredVideo(null)}
+                        key={video.uid} // Используем uid в качестве уникального ключа
+                        onMouseEnter={() => setHoveredVideo(video)} // Устанавливаем наведённое видео
+                        onMouseLeave={() => setHoveredVideo(null)} // Сбрасываем наведённое видео
                     >
                         <div className="video-title">{video.title}</div>
                         <div className="video-controls">
+                            {/* Кнопка для лайка */}
                             <button
-                                className={`reaction-btn ${likes[video.id] ? 'active' : ''}`}
-                                onClick={() => handleLike(video.id)}
+                                className={`reaction-btn ${likes[video.uid] ? 'active' : ''}`} // Проверяем статус лайка
+                                onClick={() => handleLike(video.uid)} // Обрабатываем клик по кнопке лайка
                             >
                                 •ᴗ•
                             </button>
+                            {/* Кнопка для дизлайка */}
                             <button
-                                className={`reaction-btn ${dislikes[video.id] ? 'noactive' : ''}`}
-                                onClick={() => handleDislike(video.id)}
+                                className={`reaction-btn ${dislikes[video.uid] ? 'noactive' : ''}`} // Проверяем статус дизлайка
+                                onClick={() => handleDislike(video.uid)} // Обрабатываем клик по кнопке дизлайка
                             >
                                 ˙◠˙
                             </button>
                         </div>
-                        {hoveredVideo && hoveredVideo.id === video.id && (
+                        {/* Отображаем дополнительную информацию о видео при наведении */}
+                        {hoveredVideo && hoveredVideo.uid === video.uid && (
                             <div className="tooltip">
-                                <div className="video-description">
-                                    <strong>Описание:</strong> {video.description}
-                                </div>
                                 <div className="video-category">
-                                    <strong>Категория:</strong> {video.category}
+                                    <strong>Категория:</strong> {video.category_name}
+                                </div>
+                                <div className="video-date">
+                                    <strong>Дата:</strong> {video.created_at}
                                 </div>
                             </div>
                         )}
-                        <div className="current-date">{date}</div>
+                        <div className="current-date">{video.created_at}</div>
                     </div>
                 ))}
             </div>
             <div className="refresh-recommendations">
-                <button className="refresh-btn">Обновить рекомендации</button>
+                {/* Кнопка для обновления рекомендаций */}
+                <button className="refresh-btn" onClick={handleRefresh}>Обновить рекомендации</button>
             </div>
         </div>
     );
